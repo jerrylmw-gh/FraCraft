@@ -1,52 +1,103 @@
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "@/App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import axios from "axios";
+import { Toaster } from "sonner";
+import { loadProgress, saveProgress, xpForLevel } from "./lib/storage";
+import { MCPanel, NavTab, XPBar, Block } from "./components/MinecraftUI";
+import HomePage from "./pages/HomePage";
+import VisualizePage from "./pages/VisualizePage";
+import PracticePage from "./pages/PracticePage";
+import AIQuestPage from "./pages/AIQuestPage";
+import AchievementsPage from "./pages/AchievementsPage";
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
-
-const Home = () => {
-  const helloWorldApi = async () => {
-    try {
-      const response = await axios.get(`${API}/`);
-      console.log(response.data.message);
-    } catch (e) {
-      console.error(e, `errored out requesting / api`);
-    }
-  };
-
-  useEffect(() => {
-    helloWorldApi();
-  }, []);
-
-  return (
-    <div>
-      <header className="App-header">
-        <a
-          className="App-link"
-          href="https://emergent.sh"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img src="https://avatars.githubusercontent.com/in/1201222?s=120&u=2686cf91179bbafbc7a71bfbc43004cf9ae1acea&v=4" />
-        </a>
-        <p className="mt-5">Building something incredible ~!</p>
-      </header>
-    </div>
-  );
-};
+const TABS = [
+  { id: "home", label: "HOME" },
+  { id: "visualize", label: "BLOCK LAB" },
+  { id: "practice", label: "PRACTICE" },
+  { id: "ai", label: "AI QUEST" },
+  { id: "achievements", label: "INVENTORY" },
+];
 
 function App() {
+  const [view, setView] = useState("home");
+  const [progress, setProgress] = useState(() => loadProgress());
+
+  useEffect(() => {
+    saveProgress(progress);
+  }, [progress]);
+
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />}>
-            <Route index element={<Home />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+    <div className="App mc-world-bg" data-testid="app-root">
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          style: {
+            fontFamily: "'VT323', monospace",
+            fontSize: 20,
+            background: "var(--mc-stone)",
+            border: "3px solid #000",
+            borderRadius: 0,
+            color: "#000",
+          },
+        }}
+      />
+
+      {/* ============ Top Bar (status / hotbar) ============ */}
+      <header
+        className="sticky top-0 z-40 border-b-4 border-black"
+        style={{ background: "rgba(0,0,0,0.85)", color: "#fff" }}
+        data-testid="topbar"
+      >
+        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center gap-4 flex-wrap">
+          <div className="flex items-center gap-3">
+            <div className="flex gap-1">
+              <Block kind="grass" style={{ width: 36, height: 36 }} />
+              <Block kind="diamond" style={{ width: 36, height: 36 }} />
+            </div>
+            <h1 className="text-white" style={{ fontSize: 14, margin: 0 }}>FRAC-CRAFT</h1>
+          </div>
+          <div className="flex-1 min-w-[220px]">
+            <XPBar current={progress.xp} max={xpForLevel(progress.level)} level={progress.level} />
+          </div>
+          <div className="flex gap-2 items-center">
+            <div className="mc-slot" style={{ width: 44, height: 44, fontSize: 11 }}>
+              <span style={{ color: "var(--mc-gold)" }}>{progress.streak}</span>
+            </div>
+            <p className="pixel-font" style={{ fontSize: 9 }}>STREAK</p>
+          </div>
+        </div>
+      </header>
+
+      {/* ============ Tab Nav ============ */}
+      <nav className="max-w-6xl mx-auto px-4 pt-5" data-testid="nav">
+        <div className="flex flex-wrap gap-2">
+          {TABS.map((t) => (
+            <NavTab
+              key={t.id}
+              active={view === t.id}
+              onClick={() => setView(t.id)}
+              testId={`nav-${t.id}`}
+            >
+              {t.label}
+            </NavTab>
+          ))}
+        </div>
+      </nav>
+
+      {/* ============ Main ============ */}
+      <main className="max-w-6xl mx-auto px-4 py-6 pb-24" data-testid="main">
+        {view === "home" && <HomePage progress={progress} setView={setView} />}
+        {view === "visualize" && <VisualizePage />}
+        {view === "practice" && <PracticePage progress={progress} setProgress={setProgress} />}
+        {view === "ai" && <AIQuestPage progress={progress} setProgress={setProgress} />}
+        {view === "achievements" && <AchievementsPage progress={progress} setProgress={setProgress} />}
+      </main>
+
+      {/* ============ Grass footer strip ============ */}
+      <footer
+        className="fixed bottom-0 left-0 right-0 pointer-events-none"
+        style={{ height: 28, background: "var(--mc-grass)", borderTop: "4px solid #2D5318", zIndex: 30 }}
+        data-testid="footer-grass"
+      />
     </div>
   );
 }
