@@ -1,14 +1,15 @@
 [build]
-  # 進入 frontend 資料夾
+  # 進入前端資料夾
   base = "frontend"
   
-  # 執行 build 指令
-  command = "npm run build"
+  # 執行構建指令 (對應你的 package.json)
+  command = "yarn build"
   
-  # 指定輸出目錄（以 base 為起點）
-  publish = "dist"
+  # 關鍵修正：CRA/Craco 的輸出目錄是 build
+  publish = "build"
 
 [[redirects]]
+  # 解決 React Router 重新整理時的 404 問題
   from = "/*"
   to = "/index.html"
   status = 200
