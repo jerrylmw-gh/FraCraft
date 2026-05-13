@@ -1,8 +1,9 @@
 import React, { useState, useMemo } from "react";
 import { MCPanel, MCButton } from "../components/MinecraftUI";
-import { OpWeapon, Creeper } from "../components/PixelArt";
+import { OpWeapon, Creeper, DiamondSword } from "../components/PixelArt";
 import { generateLocalProblem } from "../lib/fractions";
-import { applyResult } from "../lib/storage";
+import { applyResult, hardUnlocked } from "../lib/storage";
+import { sfx } from "../lib/sounds";
 import { toast } from "sonner";
 
 const OPS = [
@@ -22,6 +23,7 @@ export default function PracticePage({ progress, setProgress }) {
   const [selected, setSelected] = useState(null);
   const [result, setResult] = useState(null); // 'correct' | 'wrong' | null
   const [shake, setShake] = useState(false);
+  const canHard = hardUnlocked(progress);
 
   const newProblem = (newOp = op, newDiff = difficulty) => {
     setProblem(generateLocalProblem(newOp, newDiff));
@@ -41,8 +43,11 @@ export default function PracticePage({ progress, setProgress }) {
     });
     setProgress(state);
     if (correct) {
+      sfx.correct();
+      if (leveledUp) setTimeout(() => sfx.levelUp(), 300);
       toast.success(`+${gained} XP!`, { description: leveledUp ? "LEVEL UP!" : problem.explanation });
       if (newWeapons && newWeapons.length) {
+        setTimeout(() => sfx.weaponUnlock(), 500);
         newWeapons.forEach((w) => {
           toast(`⚔ NEW WEAPON: ${w.name.toUpperCase()}`, {
             description: w.desc,
@@ -51,6 +56,7 @@ export default function PracticePage({ progress, setProgress }) {
         });
       }
     } else {
+      sfx.wrong();
       setShake(true);
       setTimeout(() => setShake(false), 400);
       toast.error("Not quite!", { description: problem.explanation });
@@ -83,16 +89,32 @@ export default function PracticePage({ progress, setProgress }) {
         </div>
         <div className="flex flex-wrap gap-3 items-center mt-4">
           <span className="pixel-font" style={{ fontSize: 11 }}>LVL:</span>
-          {DIFFS.map((d) => (
-            <MCButton
-              key={d}
-              testId={`diff-${d}`}
-              variant={difficulty === d ? "gold" : "default"}
-              onClick={() => { setDifficulty(d); newProblem(op, d); }}
-            >
-              {d.toUpperCase()}
-            </MCButton>
-          ))}
+          {DIFFS.map((d) => {
+            const locked = d === "hard" && !canHard;
+            return (
+              <MCButton
+                key={d}
+                testId={`diff-${d}`}
+                variant={difficulty === d ? "gold" : "default"}
+                onClick={() => {
+                  if (locked) {
+                    toast("🔒 HARD MODE LOCKED", { description: "Forge the Diamond Sword first (Level 3 or 20 correct)" });
+                    return;
+                  }
+                  setDifficulty(d);
+                  newProblem(op, d);
+                }}
+                style={locked ? { opacity: 0.55, filter: "grayscale(0.7)" } : {}}
+              >
+                {locked && "🔒 "}{d.toUpperCase()}
+                {d === "hard" && (
+                  <span style={{ marginLeft: 6, display: "inline-flex", verticalAlign: "middle" }}>
+                    <DiamondSword size={18} />
+                  </span>
+                )}
+              </MCButton>
+            );
+          })}
         </div>
       </MCPanel>
 

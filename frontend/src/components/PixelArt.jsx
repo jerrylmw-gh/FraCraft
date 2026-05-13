@@ -226,6 +226,25 @@ export const Axe = (p) => <PixelGrid map={AXE} palette={AXE_PAL} {...p} />;
 export const Shield = (p) => <PixelGrid map={SHIELD} palette={SHIELD_PAL} {...p} />;
 export const TNT = (p) => <PixelGrid map={TNT_MAP} palette={TNT_PAL} {...p} />;
 
+// ---------- ENDER DRAGON (16x12 boss) ----------
+const DRAGON_PAL = { ".": null, k: "#0a0a16", d: "#1a1a2a", p: "#7d2ed8", m: "#c576f6", r: "#ff2d2d", w: "#fff" };
+const DRAGON = [
+  ".kk............kk",
+  ".kdk..........kdk",
+  "..kkk........kkk.",
+  "...kkkkkkkkkkkk..",
+  "..kpppdkkkdppppk.",
+  ".kpprwpkkpwrppppk",
+  ".kppmmmpppmmmppk.",
+  ".kdpppppppppppdk.",
+  "..kpppmmmmmppppk.",
+  "...kpppwwwppppk..",
+  "....kkdddddkk....",
+  ".....kk...kk.....",
+];
+
+export const EnderDragon = (p) => <PixelGrid map={DRAGON} palette={DRAGON_PAL} grid={17} {...p} />;
+
 // Helper: weapon for a math operation
 export const OpWeapon = ({ op, size = 32 }) => {
   const map = {

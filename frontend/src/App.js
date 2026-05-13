@@ -4,27 +4,36 @@ import { Toaster } from "sonner";
 import { loadProgress, saveProgress, xpForLevel } from "./lib/storage";
 import { MCPanel, NavTab, XPBar, Block } from "./components/MinecraftUI";
 import { Steve } from "./components/PixelArt";
+import { isMuted, setMuted, sfx } from "./lib/sounds";
 import HomePage from "./pages/HomePage";
 import VisualizePage from "./pages/VisualizePage";
 import PracticePage from "./pages/PracticePage";
-import AIQuestPage from "./pages/AIQuestPage";
+import BossPage from "./pages/BossPage";
 import AchievementsPage from "./pages/AchievementsPage";
 
 const TABS = [
   { id: "home", label: "HOME" },
   { id: "visualize", label: "BLOCK LAB" },
   { id: "practice", label: "PRACTICE" },
-  { id: "ai", label: "AI QUEST" },
+  { id: "boss", label: "BOSS" },
   { id: "achievements", label: "INVENTORY" },
 ];
 
 function App() {
   const [view, setView] = useState("home");
   const [progress, setProgress] = useState(() => loadProgress());
+  const [muted, setMutedState] = useState(() => isMuted());
 
   useEffect(() => {
     saveProgress(progress);
   }, [progress]);
+
+  const toggleMute = () => {
+    const next = !muted;
+    setMuted(next);
+    setMutedState(next);
+    if (!next) sfx.click();
+  };
 
   return (
     <div className="App mc-world-bg" data-testid="app-root">
@@ -64,10 +73,19 @@ function App() {
             <XPBar current={progress.xp} max={xpForLevel(progress.level)} level={progress.level} />
           </div>
           <div className="flex gap-2 items-center">
+            <button
+              onClick={toggleMute}
+              className="mc-slot"
+              style={{ width: 44, height: 44, fontSize: 18, cursor: "pointer" }}
+              data-testid="mute-toggle"
+              title={muted ? "Sound: OFF" : "Sound: ON"}
+            >
+              {muted ? "🔇" : "🔊"}
+            </button>
             <div className="mc-slot" style={{ width: 44, height: 44, fontSize: 11 }}>
               <span style={{ color: "var(--mc-gold)" }}>{progress.streak}</span>
             </div>
-            <p className="pixel-font" style={{ fontSize: 9 }}>STREAK</p>
+            <p className="pixel-font pixel-font--xs" style={{ fontSize: 9 }}>STREAK</p>
           </div>
         </div>
       </header>
@@ -93,7 +111,7 @@ function App() {
         {view === "home" && <HomePage progress={progress} setView={setView} />}
         {view === "visualize" && <VisualizePage />}
         {view === "practice" && <PracticePage progress={progress} setProgress={setProgress} />}
-        {view === "ai" && <AIQuestPage progress={progress} setProgress={setProgress} />}
+        {view === "boss" && <BossPage progress={progress} setProgress={setProgress} setView={setView} />}
         {view === "achievements" && <AchievementsPage progress={progress} setProgress={setProgress} />}
       </main>
 

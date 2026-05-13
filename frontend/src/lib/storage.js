@@ -59,9 +59,14 @@ export const ACHIEVEMENTS = [
   { id: "diamond_pickaxe", name: "Diamond Pickaxe", desc: "Get 30 correct answers", icon: "diamond", art: "sword", xp: 100 },
   { id: "emerald_trader", name: "Emerald Trader", desc: "Reach a 5-question streak", icon: "emerald", art: "shield", xp: 50 },
   { id: "ender_dragon", name: "Ender Dragon Slayer", desc: "Reach a 10-question streak", icon: "redstone", art: "enderman", xp: 150 },
-  { id: "redstone_engineer", name: "Redstone Engineer", desc: "Complete an AI Quest problem", icon: "redstone", art: "steve", xp: 30 },
+  { id: "dragon_slayer", name: "Dragon Slayer", desc: "Defeat the Ender Dragon in Boss mode", icon: "diamond", art: "sword", xp: 300 },
   { id: "creeper_calm", name: "Cool Under Pressure", desc: "Get 3 hard problems correct", icon: "emerald", art: "creeper", xp: 75 },
 ];
+
+// Weapon-gated features
+export const hasWeapon = (state, id) => (state.weapons || []).includes(id);
+export const hardUnlocked = (state) => hasWeapon(state, "sword");
+export const bossUnlocked = (state) => hasWeapon(state, "shield");
 
 export function loadProgress() {
   try {
@@ -116,7 +121,7 @@ export function applyResult(prev, { correct, difficulty = "easy", topic = "" }) 
   check("diamond_pickaxe", next.correctCount >= 30);
   check("emerald_trader", next.bestStreak >= 5);
   check("ender_dragon", next.bestStreak >= 10);
-  if (topic === "ai") check("redstone_engineer", correct);
+  if (topic === "boss_win") check("dragon_slayer", true);
   if (difficulty === "hard" && correct) {
     const hardCount = (prev._hardCorrect || 0) + 1;
     next._hardCorrect = hardCount;

@@ -1,7 +1,7 @@
 import React from "react";
 import { MCPanel, MCButton, Block } from "../components/MinecraftUI";
-import { Steve, Creeper, Zombie, Skeleton, Enderman, Pig, DiamondSword, Pickaxe, Bow, Axe, Shield } from "../components/PixelArt";
-import { WEAPONS } from "../lib/storage";
+import { Steve, Creeper, Zombie, Skeleton, Enderman, Pig, DiamondSword, Pickaxe, Bow, Axe, Shield, EnderDragon } from "../components/PixelArt";
+import { WEAPONS, bossUnlocked } from "../lib/storage";
 
 const WEAPON_ART = {
   pickaxe: Pickaxe,
@@ -43,8 +43,8 @@ export default function HomePage({ progress, setView }) {
               <MCButton testId="cta-visualize" onClick={() => setView("visualize")}>
                 BLOCK LAB
               </MCButton>
-              <MCButton testId="cta-ai" variant="gold" onClick={() => setView("ai")}>
-                ✦ AI QUEST
+              <MCButton testId="cta-boss" variant="danger" onClick={() => setView("boss")}>
+                ⛨ BOSS FIGHT
               </MCButton>
             </div>
           </div>
@@ -148,12 +148,10 @@ export default function HomePage({ progress, setView }) {
           onClick={() => setView("practice")}
           testId="feat-practice"
         />
-        <FeatureCard
-          icon="emerald"
-          title="AI STORY QUESTS"
-          body="An AI Wizard generates fresh Minecraft word problems just for you, no two the same."
-          onClick={() => setView("ai")}
-          testId="feat-ai"
+        <BossFeatureCard
+          unlocked={bossUnlocked(progress)}
+          progress={progress}
+          onClick={() => setView("boss")}
         />
       </div>
 
@@ -197,6 +195,30 @@ const FeatureCard = ({ icon, title, body, onClick, testId }) => (
     <p style={{ fontSize: 20, lineHeight: 1.35 }}>{body}</p>
     <div className="pixel-font pixel-font--xs mt-4" style={{ fontSize: 10, color: "var(--mc-redstone)" }}>
       ENTER →
+    </div>
+  </button>
+);
+
+const BossFeatureCard = ({ unlocked, progress, onClick }) => (
+  <button
+    onClick={onClick}
+    data-testid="feat-boss"
+    className="mc-panel text-left"
+    style={{ cursor: "pointer", background: unlocked ? "#2a1a3a" : "var(--mc-stone)", color: unlocked ? "#fff" : "#000", borderColor: "#000" }}
+  >
+    <div className="flex items-center gap-3 mb-3">
+      <EnderDragon size={56} />
+      <h3 className="pixel-font" style={{ fontSize: 13, color: unlocked ? "var(--mc-redstone)" : "#000", textShadow: "2px 2px 0 #000" }}>
+        BOSS FIGHT
+      </h3>
+    </div>
+    <p style={{ fontSize: 20, lineHeight: 1.35 }}>
+      {unlocked
+        ? "Face the Ender Dragon! 60 seconds, your fractions vs its fire breath."
+        : `🔒 Forge the Iron Shield first (12 correct). Progress: ${progress.correctCount}/12.`}
+    </p>
+    <div className="pixel-font pixel-font--xs mt-4" style={{ fontSize: 10, color: unlocked ? "var(--mc-gold)" : "var(--mc-redstone)" }}>
+      {unlocked ? "ENTER THE END →" : "LOCKED"}
     </div>
   </button>
 );

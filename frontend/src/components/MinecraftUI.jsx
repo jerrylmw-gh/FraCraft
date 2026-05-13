@@ -1,9 +1,14 @@
 import React from "react";
+import { sfx } from "../lib/sounds";
 
-export const MCButton = ({ children, variant = "default", className = "", testId, ...props }) => {
+export const MCButton = ({ children, variant = "default", className = "", testId, onClick, ...props }) => {
   const cls = `mc-btn ${variant === "primary" ? "mc-btn--primary" : variant === "gold" ? "mc-btn--gold" : variant === "danger" ? "mc-btn--danger" : ""} ${className}`;
+  const handleClick = (e) => {
+    sfx.click();
+    if (onClick) onClick(e);
+  };
   return (
-    <button className={cls} data-testid={testId} {...props}>
+    <button className={cls} data-testid={testId} onClick={handleClick} {...props}>
       {children}
     </button>
   );
