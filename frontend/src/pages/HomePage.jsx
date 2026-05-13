@@ -1,8 +1,19 @@
 import React from "react";
 import { MCPanel, MCButton, Block } from "../components/MinecraftUI";
 import { Steve, Creeper, Zombie, Skeleton, Enderman, Pig, DiamondSword, Pickaxe, Bow, Axe, Shield } from "../components/PixelArt";
+import { WEAPONS } from "../lib/storage";
+
+const WEAPON_ART = {
+  pickaxe: Pickaxe,
+  axe: Axe,
+  bow: Bow,
+  shield: Shield,
+  sword: DiamondSword,
+};
 
 export default function HomePage({ progress, setView }) {
+  const unlockedW = new Set(progress.weapons || []);
+  const unlockedCount = WEAPONS.filter((w) => unlockedW.has(w.id)).length;
   return (
     <div className="space-y-6" data-testid="home-page">
       <MCPanel variant="dark" testId="hero">
@@ -45,7 +56,7 @@ export default function HomePage({ progress, setView }) {
         <h3 className="pixel-font" style={{ fontSize: 13 }}>YOUR ENEMIES & ARSENAL</h3>
         <div className="grid sm:grid-cols-2 gap-6 mt-5">
           <div>
-            <p className="pixel-font" style={{ fontSize: 10, color: "var(--mc-redstone)" }}>HOSTILE MOBS</p>
+            <p className="pixel-font pixel-font--xs" style={{ fontSize: 10, color: "var(--mc-redstone)" }}>HOSTILE MOBS</p>
             <div className="flex flex-wrap gap-3 mt-3" data-testid="mob-row">
               {[
                 { C: Creeper, name: "CREEPER" },
@@ -64,23 +75,60 @@ export default function HomePage({ progress, setView }) {
             </div>
           </div>
           <div>
-            <p className="pixel-font" style={{ fontSize: 10, color: "var(--mc-emerald)" }}>WEAPONS UNLOCKED</p>
+            <p className="pixel-font pixel-font--xs" style={{ fontSize: 10, color: "var(--mc-emerald)" }}>
+              WEAPONS UNLOCKED ({unlockedCount}/{WEAPONS.length})
+            </p>
             <div className="flex flex-wrap gap-3 mt-3" data-testid="weapon-row">
-              {[
-                { C: DiamondSword, name: "SWORD" },
-                { C: Pickaxe, name: "PICKAXE" },
-                { C: Axe, name: "AXE" },
-                { C: Bow, name: "BOW" },
-                { C: Shield, name: "SHIELD" },
-              ].map(({ C, name }) => (
-                <div key={name} className="flex flex-col items-center gap-1">
-                  <div className="mc-slot" style={{ width: 56, height: 56 }}>
-                    <C size={44} />
+              {WEAPONS.map((w) => {
+                const C = WEAPON_ART[w.id];
+                const has = unlockedW.has(w.id);
+                return (
+                  <div
+                    key={w.id}
+                    className="flex flex-col items-center gap-1"
+                    title={has ? `${w.name} — ${w.desc}` : `LOCKED — ${w.requirement}`}
+                    data-testid={`weapon-${w.id}-${has ? "unlocked" : "locked"}`}
+                  >
+                    <div
+                      className="mc-slot"
+                      style={{
+                        width: 56,
+                        height: 56,
+                        background: has ? "var(--mc-stone-dark)" : "#3a3a3a",
+                        filter: has ? "none" : "grayscale(1) brightness(0.55)",
+                        position: "relative",
+                      }}
+                    >
+                      <C size={44} />
+                      {!has && (
+                        <span
+                          style={{
+                            position: "absolute",
+                            inset: 0,
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            fontSize: 22,
+                            color: "#fff",
+                            textShadow: "2px 2px 0 #000",
+                          }}
+                        >
+                          🔒
+                        </span>
+                      )}
+                    </div>
+                    <span className="pixel-font pixel-font--none" style={{ fontSize: 9, color: has ? "#000" : "#666" }}>
+                      {w.name.split(" ").slice(-1)[0].toUpperCase()}
+                    </span>
                   </div>
-                  <span className="pixel-font pixel-font--none" style={{ fontSize: 9, color: "#000" }}>{name}</span>
-                </div>
-              ))}
+                );
+              })}
             </div>
+            <p className="mt-3" style={{ fontSize: 16, color: "#222" }}>
+              {unlockedCount < WEAPONS.length
+                ? `⚒ Next reward: ${WEAPONS.find(w=>!unlockedW.has(w.id)).name} — ${WEAPONS.find(w=>!unlockedW.has(w.id)).requirement}`
+                : "★ All weapons forged! You're a Master Crafter!"}
+            </p>
           </div>
         </div>
       </MCPanel>

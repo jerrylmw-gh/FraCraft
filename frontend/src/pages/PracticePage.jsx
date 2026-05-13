@@ -34,7 +34,7 @@ export default function PracticePage({ progress, setProgress }) {
     setSelected(idx);
     const correct = idx === problem.correct_index;
     setResult(correct ? "correct" : "wrong");
-    const { state, gained, leveledUp } = applyResult(progress, {
+    const { state, gained, leveledUp, newWeapons } = applyResult(progress, {
       correct,
       difficulty,
       topic: op,
@@ -42,6 +42,14 @@ export default function PracticePage({ progress, setProgress }) {
     setProgress(state);
     if (correct) {
       toast.success(`+${gained} XP!`, { description: leveledUp ? "LEVEL UP!" : problem.explanation });
+      if (newWeapons && newWeapons.length) {
+        newWeapons.forEach((w) => {
+          toast(`⚔ NEW WEAPON: ${w.name.toUpperCase()}`, {
+            description: w.desc,
+            duration: 4000,
+          });
+        });
+      }
     } else {
       setShake(true);
       setTimeout(() => setShake(false), 400);
