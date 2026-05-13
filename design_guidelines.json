@@ -1,0 +1,132 @@
+{
+  "theme": "Light",
+  "archetype": "Custom: Minecraft Retro-Voxel (Vibrant Play + Retro Terminal)",
+  "typography": {
+    "font_families": {
+      "headings": "'Press Start 2P', system-ui, monospace",
+      "body": "'VT323', 'Courier New', monospace"
+    },
+    "scale": {
+      "h1": "text-3xl sm:text-4xl leading-tight tracking-tight",
+      "h2": "text-2xl sm:text-3xl leading-snug",
+      "h3": "text-xl sm:text-2xl",
+      "h4": "text-lg sm:text-xl",
+      "body": "text-xl sm:text-2xl lg:text-3xl leading-relaxed",
+      "labels": "text-base sm:text-lg uppercase tracking-widest"
+    },
+    "rules": [
+      "Headings MUST use tight letter spacing.",
+      "Apply a crisp text-shadow to headings to simulate the Minecraft title effect: `text-shadow: 2px 2px 0px #383838`.",
+      "Ensure body text in VT323 is large enough (min text-xl) because pixel fonts can be hard to read at small sizes.",
+      "NEVER use Inter, Roboto, or standard sans-serif for this project."
+    ]
+  },
+  "colors": {
+    "background": {
+      "page": "#78A7FF",
+      "surface": "#C6C6C6",
+      "surface_dark": "#8B8B8B"
+    },
+    "primary": {
+      "DEFAULT": "#5E9D34",
+      "foreground": "#FFFFFF",
+      "dirt": "#866043"
+    },
+    "accents": {
+      "diamond": "#47E5C3",
+      "emerald": "#41F076",
+      "gold": "#FEE227",
+      "iron": "#E5E5E5",
+      "redstone": "#AA0000"
+    },
+    "borders": {
+      "light": "#FFFFFF",
+      "dark": "#555555",
+      "black": "#000000"
+    },
+    "text": {
+      "primary": "#000000",
+      "secondary": "#383838",
+      "inverse": "#FFFFFF",
+      "yellow": "#FFFF55"
+    },
+    "rules": [
+      "Use #C6C6C6 (Stone Gray) as the base for all panels, cards, and buttons to mimic Minecraft UI screens.",
+      "Use Diamond, Emerald, and Gold for achievement highlights and badges.",
+      "Ensure high contrast: White text on dark/colored buttons needs a dark gray/black text-shadow (`2px 2px 0px #383838`) to be readable.",
+      "Text inside the Minecraft-style buttons should typically be white with a dark shadow, just like in the game."
+    ]
+  },
+  "layout_and_spacing": {
+    "grid_system": "Use a Tetris-style Grid for the main fraction workspace (chunky, uneven boxes), and a Control Room Grid for the dashboard/inventory.",
+    "spacing_scale": "Use generous but chunky spacing: p-4, p-8. Avoid small fractional spacing to maintain the blocky feel.",
+    "borders_and_shadows": {
+      "cards": "border-4 border-black bg-[#C6C6C6] shadow-[8px_8px_0px_rgba(0,0,0,0.5)]",
+      "panels": "bg-[#C6C6C6] border-[4px] border-t-[#FFFFFF] border-l-[#FFFFFF] border-b-[#555555] border-r-[#555555]",
+      "buttons": "bg-[#C6C6C6] border-[4px] border-black shadow-[inset_4px_4px_0px_#FFFFFF,inset_-4px_-4px_0px_#555555] hover:bg-[#7EA1ED] text-white text-shadow-sm",
+      "buttons_active": "shadow-[inset_4px_4px_0px_#555555,inset_-4px_-4px_0px_#FFFFFF] bg-[#7EA1ED] translate-y-[2px]",
+      "blocks": "bg-[#5E9D34] border-b-[12px] border-[#866043] shadow-[inset_4px_4px_0px_rgba(255,255,255,0.4),inset_-4px_-4px_0px_rgba(0,0,0,0.4)]"
+    }
+  },
+  "components": {
+    "FractionVisualizer": {
+      "description": "Visual representation of fractions using CSS grids mimicking Minecraft blocks.",
+      "styles": "Use a CSS grid (e.g., grid-cols-2, grid-cols-3) with gap-1 or gap-2. Active block units use the 'blocks' border/shadow style. Inactive blocks use bg-black/20 with border-2 border-dashed border-black/30."
+    },
+    "MinecraftButton": {
+      "description": "Primary action button across the app.",
+      "styles": "Blocky, NO border-radius (`rounded-none`). Uses the 'buttons' shadow pattern. On hover: bg-[#7EA1ED] (Minecraft selection blue). Text must be white with a dark text-shadow."
+    },
+    "XPProgressBar": {
+      "description": "Progress bar resembling the Minecraft XP/level bar.",
+      "styles": "Container: h-6 bg-black border-2 border-[#555555] p-[2px]. Fill: bg-[#41F076] border-t-2 border-[#AAFFAA] border-b-2 border-[#00AA00]."
+    },
+    "AchievementBadge": {
+      "description": "Pixel-art style badge using CSS.",
+      "styles": "Square container, border-4 border-black, background color matching the ore (e.g., Diamond #47E5C3). Add an inner blocky glow using inset shadows. Center a Lucide icon heavily styled to look retro."
+    },
+    "InventorySlot": {
+      "description": "Used for holding fraction numbers or dragging answers.",
+      "styles": "w-16 h-16 bg-[#8B8B8B] shadow-[inset_4px_4px_0px_#383838,inset_-4px_-4px_0px_#FFFFFF] flex items-center justify-center text-2xl text-white."
+    },
+    "Modal": {
+      "description": "Used for level complete, word problems, or dialogs.",
+      "styles": "Centered, max-w-2xl, bg-[#C6C6C6], border-[4px] border-black with inner inset bevel (white top/left, dark gray bottom/right). Title in gold text with black shadow."
+    }
+  },
+  "animation_and_motion": {
+    "rules": [
+      "Keep animations retro and blocky. Avoid smooth, easing curves.",
+      "Use stepped animations (`steps(4)`) if doing any CSS transitions.",
+      "Hover effects should be instantaneous color/shadow swaps, not smooth transitions.",
+      "Add a slight CSS 'shake' animation for wrong answers.",
+      "Level up should have a 'pop' scale effect without smoothing."
+    ]
+  },
+  "media_and_icons": {
+    "icons_library": "lucide-react",
+    "image_urls": [],
+    "rules": [
+      "Do not use generic smooth illustrations.",
+      "Apply pixelated aesthetics to UI elements via CSS.",
+      "Build blocky patterns using CSS linear-gradients, grids, and box-shadows.",
+      "For a background, use CSS linear gradient for sky blue, and a bottom fixed block for grass."
+    ]
+  },
+  "testing": {
+    "attributes": [
+      "All interactive elements MUST include `data-testid` (e.g., `data-testid=\"fraction-block-1\"`, `data-testid=\"submit-answer-button\"`).",
+      "All views/screens, inputs, and modals must have a parent `data-testid`."
+    ]
+  },
+  "instructions_to_main_agent": [
+    "Load Google Fonts 'Press Start 2P' (for headings) and 'VT323' (for body/numbers) in the main index.html or global CSS.",
+    "Do NOT use `border-radius` anywhere. Every corner must be sharp (`rounded-none`).",
+    "Build the FractionVisualizer using pure CSS grids and background colors. Do not rely on external images for the blocks. Use heavy border-bottom (dirt color) and background (grass color) to make it look like a voxel block.",
+    "Implement local browser storage (`localStorage`) for saving XP, level progression, and achievement badges.",
+    "Integrate the LLM for generating math word problems. Ensure the prompt explicitly asks for 'Minecraft themed fraction word problems for 10-year-olds'.",
+    "Replace generic Shadcn component styles with the Retro/Minecraft specific inset box-shadows and borders defined in the colors and layout sections. If Shadcn components are too hard to strip of modern styles, use raw HTML/Tailwind for the heavy UI pieces.",
+    "Text shadows are critical. Extend Tailwind config to include a custom utility for text-shadow (e.g., `.text-shadow-sm { text-shadow: 2px 2px 0px #383838 }`).",
+    "Ensure all math symbols (+, -, *, /) use the VT323 font and are large and highly legible."
+  ]
+}
