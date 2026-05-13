@@ -28,7 +28,8 @@ function App() {
   return (
     <div className="App mc-world-bg" data-testid="app-root">
       <Toaster
-        position="top-center"
+        position="top-right"
+        duration={2500}
         toastOptions={{
           style: {
             fontFamily: "'VT323', monospace",

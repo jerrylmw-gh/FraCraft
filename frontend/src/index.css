@@ -254,7 +254,8 @@ h1, h2, h3, h4, .pixel-font {
   gap: 14px;
   align-items: center;
 }
-.achievement--locked { filter: grayscale(1) brightness(0.7); opacity: 0.6; }
+.achievement--locked { filter: grayscale(1) brightness(0.85); opacity: 0.85; }
+.achievement--locked .pixel-font { color: #1a1a1a !important; }
 .achievement__icon {
   width: 56px;
   height: 56px;
