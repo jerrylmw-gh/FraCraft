@@ -1,0 +1,14 @@
+[build]
+  # 進入 frontend 資料夾
+  base = "frontend"
+  
+  # 執行 build 指令
+  command = "npm run build"
+  
+  # 指定輸出目錄（以 base 為起點）
+  publish = "dist"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
