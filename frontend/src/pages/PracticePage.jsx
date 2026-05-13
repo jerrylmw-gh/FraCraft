@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { MCPanel, MCButton } from "../components/MinecraftUI";
+import { OpWeapon, Creeper } from "../components/PixelArt";
 import { generateLocalProblem } from "../lib/fractions";
 import { applyResult } from "../lib/storage";
 import { toast } from "sonner";
@@ -67,6 +68,7 @@ export default function PracticePage({ progress, setProgress }) {
               variant={op === o.id ? "primary" : "default"}
               onClick={() => { setOp(o.id); newProblem(o.id, difficulty); }}
             >
+              <OpWeapon op={o.id} size={22} />
               {o.label}
             </MCButton>
           ))}
@@ -88,7 +90,11 @@ export default function PracticePage({ progress, setProgress }) {
 
       <MCPanel variant="dark" className={shake ? "mc-shake" : ""} testId="problem-card">
         <div className="text-center py-4">
-          <p className="pixel-font" style={{ fontSize: 12, color: "var(--mc-gold)" }}>PROBLEM</p>
+          <div className="flex items-center justify-center gap-4 mb-2">
+            <OpWeapon op={op} size={48} />
+            <p className="pixel-font" style={{ fontSize: 12, color: "var(--mc-gold)" }}>PROBLEM</p>
+            <Creeper size={48} />
+          </div>
           <div className="mt-6 pixel-font text-white" style={{ fontSize: 28, lineHeight: 1.4, whiteSpace: "pre-line", textShadow: "3px 3px 0 #000" }}>
             {problem.question}
           </div>

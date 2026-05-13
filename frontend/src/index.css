@@ -43,7 +43,16 @@ body {
   box-sizing: border-box;
 }
 
-h1, h2, h3, h4, .pixel-font {
+.pixel-font {
+  font-family: 'Press Start 2P', system-ui, monospace;
+  text-shadow: 3px 3px 0px var(--mc-shadow);
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+}
+.pixel-font--xs { text-shadow: 1px 1px 0px var(--mc-shadow) !important; }
+.pixel-font--none { text-shadow: none !important; }
+
+h1, h2, h3, h4 {
   font-family: 'Press Start 2P', system-ui, monospace;
   text-shadow: 3px 3px 0px var(--mc-shadow);
   letter-spacing: 0.02em;

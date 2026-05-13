@@ -1,6 +1,16 @@
 import React from "react";
 import { MCPanel, MCButton, Block } from "../components/MinecraftUI";
+import { Steve, Creeper, Enderman, DiamondSword, Pickaxe, Shield } from "../components/PixelArt";
 import { ACHIEVEMENTS, resetProgress } from "../lib/storage";
+
+const ART_MAP = {
+  steve: Steve,
+  creeper: Creeper,
+  enderman: Enderman,
+  sword: DiamondSword,
+  pickaxe: Pickaxe,
+  shield: Shield,
+};
 
 export default function AchievementsPage({ progress, setProgress }) {
   const unlocked = new Set(progress.achievements);
@@ -56,14 +66,15 @@ export default function AchievementsPage({ progress, setProgress }) {
       <div className="grid sm:grid-cols-2 gap-4">
         {ACHIEVEMENTS.map((a) => {
           const has = unlocked.has(a.id);
+          const ArtComp = a.art ? ART_MAP[a.art] : null;
           return (
             <div
               key={a.id}
               className={`achievement ${has ? "" : "achievement--locked"}`}
               data-testid={`achievement-${a.id}`}
             >
-              <div className="achievement__icon">
-                <Block kind={a.icon} style={{ width: "100%", height: "100%" }} />
+              <div className="achievement__icon" style={{ background: `var(--mc-${a.icon === "iron" ? "iron" : a.icon === "gold" ? "gold" : a.icon === "diamond" ? "diamond" : a.icon === "emerald" ? "emerald" : a.icon === "redstone" ? "redstone" : "stone"})` }}>
+                {ArtComp ? <ArtComp size={44} /> : <Block kind={a.icon} style={{ width: "100%", height: "100%" }} />}
               </div>
               <div className="flex-1">
                 <p className="pixel-font" style={{ fontSize: 11, color: has ? "var(--mc-gold)" : "#000", textShadow: has ? "2px 2px 0 #000" : "none" }}>

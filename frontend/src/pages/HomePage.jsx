@@ -1,16 +1,23 @@
 import React from "react";
 import { MCPanel, MCButton, Block } from "../components/MinecraftUI";
+import { Steve, Creeper, Zombie, Skeleton, Enderman, Pig, DiamondSword, Pickaxe, Bow, Axe, Shield } from "../components/PixelArt";
 
 export default function HomePage({ progress, setView }) {
   return (
     <div className="space-y-6" data-testid="home-page">
       <MCPanel variant="dark" testId="hero">
         <div className="flex items-start gap-6 flex-wrap">
-          <div className="flex gap-1">
-            <Block kind="grass" style={{ width: 64, height: 64 }} />
-            <Block kind="diamond" style={{ width: 64, height: 64 }} />
-            <Block kind="emerald" style={{ width: 64, height: 64 }} />
-            <Block kind="gold" style={{ width: 64, height: 64 }} />
+          <div className="flex flex-col gap-2">
+            <div className="flex gap-1">
+              <Block kind="grass" style={{ width: 56, height: 56 }} />
+              <Block kind="diamond" style={{ width: 56, height: 56 }} />
+              <Block kind="emerald" style={{ width: 56, height: 56 }} />
+              <Block kind="gold" style={{ width: 56, height: 56 }} />
+            </div>
+            <div className="flex gap-1 items-center justify-center mt-2 mc-panel" style={{ padding: 6, background: "var(--mc-stone)" }}>
+              <Steve size={44} />
+              <DiamondSword size={44} />
+            </div>
           </div>
           <div className="flex-1 min-w-[260px]">
             <h1 className="text-white" style={{ fontSize: 26 }}>MINECRAFT FRACTIONS</h1>
@@ -28,6 +35,51 @@ export default function HomePage({ progress, setView }) {
               <MCButton testId="cta-ai" variant="gold" onClick={() => setView("ai")}>
                 ✦ AI QUEST
               </MCButton>
+            </div>
+          </div>
+        </div>
+      </MCPanel>
+
+      {/* ============ Mob & Weapon Showcase ============ */}
+      <MCPanel testId="showcase">
+        <h3 className="pixel-font" style={{ fontSize: 13 }}>YOUR ENEMIES & ARSENAL</h3>
+        <div className="grid sm:grid-cols-2 gap-6 mt-5">
+          <div>
+            <p className="pixel-font" style={{ fontSize: 10, color: "var(--mc-redstone)" }}>HOSTILE MOBS</p>
+            <div className="flex flex-wrap gap-3 mt-3" data-testid="mob-row">
+              {[
+                { C: Creeper, name: "CREEPER" },
+                { C: Zombie, name: "ZOMBIE" },
+                { C: Skeleton, name: "SKELETON" },
+                { C: Enderman, name: "ENDER" },
+                { C: Pig, name: "PIG" },
+              ].map(({ C, name }) => (
+                <div key={name} className="flex flex-col items-center gap-1">
+                  <div className="mc-slot" style={{ width: 56, height: 56 }}>
+                    <C size={44} />
+                  </div>
+                  <span className="pixel-font pixel-font--none" style={{ fontSize: 9, color: "#000" }}>{name}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div>
+            <p className="pixel-font" style={{ fontSize: 10, color: "var(--mc-emerald)" }}>WEAPONS UNLOCKED</p>
+            <div className="flex flex-wrap gap-3 mt-3" data-testid="weapon-row">
+              {[
+                { C: DiamondSword, name: "SWORD" },
+                { C: Pickaxe, name: "PICKAXE" },
+                { C: Axe, name: "AXE" },
+                { C: Bow, name: "BOW" },
+                { C: Shield, name: "SHIELD" },
+              ].map(({ C, name }) => (
+                <div key={name} className="flex flex-col items-center gap-1">
+                  <div className="mc-slot" style={{ width: 56, height: 56 }}>
+                    <C size={44} />
+                  </div>
+                  <span className="pixel-font pixel-font--none" style={{ fontSize: 9, color: "#000" }}>{name}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -95,7 +147,7 @@ const FeatureCard = ({ icon, title, body, onClick, testId }) => (
       <h3 className="pixel-font" style={{ fontSize: 13 }}>{title}</h3>
     </div>
     <p style={{ fontSize: 20, lineHeight: 1.35 }}>{body}</p>
-    <div className="pixel-font mt-4" style={{ fontSize: 10, color: "var(--mc-redstone)" }}>
+    <div className="pixel-font pixel-font--xs mt-4" style={{ fontSize: 10, color: "var(--mc-redstone)" }}>
       ENTER →
     </div>
   </button>

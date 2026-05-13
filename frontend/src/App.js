@@ -3,6 +3,7 @@ import "@/App.css";
 import { Toaster } from "sonner";
 import { loadProgress, saveProgress, xpForLevel } from "./lib/storage";
 import { MCPanel, NavTab, XPBar, Block } from "./components/MinecraftUI";
+import { Steve } from "./components/PixelArt";
 import HomePage from "./pages/HomePage";
 import VisualizePage from "./pages/VisualizePage";
 import PracticePage from "./pages/PracticePage";
@@ -50,6 +51,9 @@ function App() {
       >
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center gap-4 flex-wrap">
           <div className="flex items-center gap-3">
+            <div className="mc-slot" style={{ width: 44, height: 44 }} data-testid="steve-avatar">
+              <Steve size={36} />
+            </div>
             <div className="flex gap-1">
               <Block kind="grass" style={{ width: 36, height: 36 }} />
               <Block kind="diamond" style={{ width: 36, height: 36 }} />

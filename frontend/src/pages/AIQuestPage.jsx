@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { MCPanel, MCButton } from "../components/MinecraftUI";
+import { DifficultyMob, Steve } from "../components/PixelArt";
 import { applyResult } from "../lib/storage";
 import { toast } from "sonner";
 
@@ -88,6 +89,7 @@ export default function AIQuestPage({ progress, setProgress }) {
               variant={difficulty === d ? "gold" : "default"}
               onClick={() => setDifficulty(d)}
             >
+              <DifficultyMob difficulty={d} size={22} />
               {d.toUpperCase()}
             </MCButton>
           ))}
@@ -109,10 +111,13 @@ export default function AIQuestPage({ progress, setProgress }) {
       {problem && !loading && (
         <MCPanel variant="dark" testId="ai-problem">
           <div className="flex items-center gap-3 mb-3">
+            <DifficultyMob difficulty={problem.difficulty} size={56} />
             <div className={`mc-block mc-block--${problem.minecraft_flavor.includes("diamond") ? "diamond" : problem.minecraft_flavor.includes("emerald") ? "emerald" : problem.minecraft_flavor.includes("gold") ? "gold" : problem.minecraft_flavor.includes("iron") ? "iron" : "grass"}`} style={{ width: 48, height: 48 }} />
             <p className="pixel-font" style={{ color: "var(--mc-gold)", fontSize: 11 }}>
               QUEST: {problem.minecraft_flavor.toUpperCase()}
             </p>
+            <div className="flex-1" />
+            <Steve size={48} />
           </div>
           <p className="text-white" style={{ fontSize: 24, lineHeight: 1.5 }}>{problem.question}</p>
 

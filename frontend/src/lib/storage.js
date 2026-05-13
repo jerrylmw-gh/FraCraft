@@ -12,14 +12,14 @@ const defaultState = {
 };
 
 export const ACHIEVEMENTS = [
-  { id: "first_block", name: "First Block", desc: "Answer your first question", icon: "stone", xp: 10 },
-  { id: "iron_miner", name: "Iron Miner", desc: "Get 5 correct answers", icon: "iron", xp: 25 },
-  { id: "gold_rush", name: "Gold Rush", desc: "Get 15 correct answers", icon: "gold", xp: 50 },
-  { id: "diamond_pickaxe", name: "Diamond Pickaxe", desc: "Get 30 correct answers", icon: "diamond", xp: 100 },
-  { id: "emerald_trader", name: "Emerald Trader", desc: "Reach a 5-question streak", icon: "emerald", xp: 50 },
-  { id: "ender_dragon", name: "Ender Dragon Slayer", desc: "Reach a 10-question streak", icon: "redstone", xp: 150 },
-  { id: "redstone_engineer", name: "Redstone Engineer", desc: "Complete an AI Quest problem", icon: "redstone", xp: 30 },
-  { id: "creeper_calm", name: "Cool Under Pressure", desc: "Get 3 hard problems correct", icon: "emerald", xp: 75 },
+  { id: "first_block", name: "First Block", desc: "Answer your first question", icon: "stone", art: null, xp: 10 },
+  { id: "iron_miner", name: "Iron Miner", desc: "Get 5 correct answers", icon: "iron", art: "pickaxe", xp: 25 },
+  { id: "gold_rush", name: "Gold Rush", desc: "Get 15 correct answers", icon: "gold", art: null, xp: 50 },
+  { id: "diamond_pickaxe", name: "Diamond Pickaxe", desc: "Get 30 correct answers", icon: "diamond", art: "sword", xp: 100 },
+  { id: "emerald_trader", name: "Emerald Trader", desc: "Reach a 5-question streak", icon: "emerald", art: "shield", xp: 50 },
+  { id: "ender_dragon", name: "Ender Dragon Slayer", desc: "Reach a 10-question streak", icon: "redstone", art: "enderman", xp: 150 },
+  { id: "redstone_engineer", name: "Redstone Engineer", desc: "Complete an AI Quest problem", icon: "redstone", art: "steve", xp: 30 },
+  { id: "creeper_calm", name: "Cool Under Pressure", desc: "Get 3 hard problems correct", icon: "emerald", art: "creeper", xp: 75 },
 ];
 
 export function loadProgress() {
